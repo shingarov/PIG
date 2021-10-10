@@ -14,15 +14,15 @@ ProgramSpec3 >> add256ToY [
 	oldY := y.
 	self precondition: Bool true.
 	y := y + 256.
-	self postcondition: y = oldY
+	self postcondition: y === oldY
 
 ]
 
 { #category : #adding }
 ProgramSpec3 >> addOneTo: X [
-	self precondition: x = X.
+	self precondition: x === X.
 	x := x + 1.
-	self postcondition: x = (X+1).
+	self postcondition: x === (X+1).
 
 ]
 
