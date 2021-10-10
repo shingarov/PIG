@@ -40,3 +40,8 @@ Catenation >> c2 [
 Catenation >> c2: anObject [
 	c2 := anObject
 ]
+
+{ #category : #semantics }
+Catenation >> mutates: oldState into: newState [
+	self shouldBeImplemented
+]

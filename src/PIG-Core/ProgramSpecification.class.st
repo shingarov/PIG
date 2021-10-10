@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'precondition',
-		'postcondition'
+		'postcondition',
+		'searchBlock'
 	],
 	#category : #'PIG-Core'
 }
@@ -21,7 +22,7 @@ ProgramSpecification >> initialize [
 { #category : #initialization }
 ProgramSpecification >> initializeStateSpace [
 	self class instVarNames do: [ :aName |
-		self instVarNamed: aName put: ((self domain at: aName) mkConst: aName asString) ]
+		self instVarNamed: aName put: ((self class domain at: aName) mkFreshConst: aName asString) ]
 ]
 
 { #category : #accessing }
@@ -42,6 +43,11 @@ ProgramSpecification >> precondition [
 { #category : #accessing }
 ProgramSpecification >> precondition: anObject [
 	precondition := anObject
+]
+
+{ #category : #accessing }
+ProgramSpecification >> searchBlock: anObject [
+	searchBlock := anObject
 ]
 
 { #category : #logic }
