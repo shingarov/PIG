@@ -9,11 +9,10 @@ Class {
 
 { #category : #'as yet unclassified' }
 ProgramSpecIS >> _ [
+
+	
 	candidate isNil ifTrue: [
-		"within step 1: discover SOME X"
-			stateChain := (1 to: self fuel+1) collect: [ :t | Int sort mkFreshConst: ('state_', t printString) ].
-			stateChain at: 1 put: state.
-			state := stateChain last
+^searchBlock value
 	] ifFalse: [
 		"we have a program, and trying to verify it"
 		(candidate text collect: [ :instName | isa at: instName ])
@@ -45,11 +44,6 @@ ProgramSpecIS >> domain [
 	^Dictionary newFromAssociations: {
 		#state -> Int sort
 	}
-]
-
-{ #category : #'as yet unclassified' }
-ProgramSpecIS >> fuel [
-	^2
 ]
 
 { #category : #'as yet unclassified' }

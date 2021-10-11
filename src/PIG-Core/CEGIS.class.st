@@ -25,6 +25,11 @@ CEGIS >> availableBlocks: anObject [
 ]
 
 { #category : #synthesis }
+CEGIS >> fuel [ 
+	^2
+]
+
+{ #category : #synthesis }
 CEGIS >> synthesize: specClass [
 	^self synthesize: specClass given: {Int sort anyOne.}
 ]
@@ -55,12 +60,19 @@ CEGIS >> synthesize: specClass givenExactly: exampleInputs [
 	| answers specificationFormula clauses_chains chains |
 
 	clauses_chains := exampleInputs collect: [ :example |
-		| spec |
+		| spec stateChain |
 		spec := specClass new.
 		spec state: example.
+		spec searchBlock: [
+			"This is the block that will be called back from #_ and we
+			don't have a candidate program."
+			stateChain := (1 to: self fuel+1) collect: [ :t | Int sort mkFreshConst: ('state_', t printString) ].
+			stateChain at: 1 put: example.
+			spec state: stateChain last
+		].
 		spec perform: spec scriptSelector "with: example".
 		(spec precondition ==> spec postcondition)
-			-> spec stateChain 
+			-> stateChain 
 	].
 	specificationFormula := Bool and: (clauses_chains collect: #key).
 	chains := clauses_chains collect: #value.

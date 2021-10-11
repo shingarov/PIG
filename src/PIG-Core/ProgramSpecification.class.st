@@ -6,6 +6,7 @@ Class {
 		'postcondition',
 		'stateChain',
 		'candidate',
+		'searchBlock',
 		'isa'
 	],
 	#category : #'PIG-Core'
@@ -61,6 +62,11 @@ ProgramSpecification >> precondition [
 { #category : #accessing }
 ProgramSpecification >> precondition: anObject [
 	precondition := anObject
+]
+
+{ #category : #accessing }
+ProgramSpecification >> searchBlock: anObject [
+	searchBlock := anObject
 ]
 
 { #category : #accessing }
