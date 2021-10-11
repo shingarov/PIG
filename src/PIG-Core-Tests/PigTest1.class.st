@@ -42,5 +42,7 @@ PigTest1 >> testSynthAdd2 [
 	| spec program |
 	spec := ProgramSpecIS new.
 	program := spec synthStep1.
-	program printString
+	self assert: program synthesizedProgram size equals: 2.
+	self assert: program synthesizedProgram first equals: 'add1'.
+	self assert: program synthesizedProgram second equals: 'add1'.
 ]

@@ -56,40 +56,13 @@ ProgramSpecIS >> state [
 
 { #category : #'as yet unclassified' }
 ProgramSpecIS >> synthStep1 [
-	| X add1 load2 answers |
-	X := 'X' toInt.
-	self add2: X.
-	
-	add1 := CommandADD1 new.
-	load2 := CommandLOAD2 new.
-	isa := Dictionary new
-		at: 'add1' put: add1;
-		at: 'load2' put: load2;
-	 yourself.
-	answers := EzSMT new solveProgram: '
-		fuel(2).
-		
-		1 { program_text(I,T) : instr(I) } 1 :- T = 1..M, fuel(M).
-		
-		instr(add1;load2).
-		
-		'	in: thisContext.
-	
-	
-	self halt.
-	
-	candidate := answers first.
-	self initializeStateSpace.
-	self add2: ('X' toInt).
-	[self verify. ^candidate]
-		on: NotValid 
-		do: [ :ex | ^self synthStep2: {ex counterexample constantsASTs at: 'X'.} ]
+	^self synthStep2: {Int sort anyOne.}
 ]
 
 { #category : #'as yet unclassified' }
 ProgramSpecIS >> synthStep2: Xs [
 	| add1 load2 answers specificationFormula clauses_chains chains vspec |
-self halt.
+
 	clauses_chains := Xs collect: [ :example |
 		| spec initState |
 		spec := ProgramSpecIS new.
@@ -118,7 +91,7 @@ self halt.
 		
 		'	in: thisContext.
 	
-	self halt.
+
 	
 	vspec := self class new.
 	vspec isa: isa.
