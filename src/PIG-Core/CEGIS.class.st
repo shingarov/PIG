@@ -44,6 +44,16 @@ CEGIS >> synthesize: specClass given: exampleInputs [
 	spec isa: availableBlocks.
 	spec 	candidate: candidate.
 	spec state: 'X' toInt.
+
+	spec searchBlock: [
+		"To verify the candidate program, we tried to run the script and it hit the hole.
+		The hole calls back this block.
+		Here we symbolically interpret the program, by iterating over the instructions
+		and sending #work: to each instruction."
+		(candidate text collect: [ :instName | availableBlocks at: instName ])
+			do: [ :inst | spec state: (inst work: spec state) ]].
+
+
 	spec perform: spec scriptSelector.
 	[ spec verify. ^candidate ]
 			on: NotValid 

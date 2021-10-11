@@ -9,16 +9,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 ProgramSpecIS >> _ [
-
-	
-	candidate isNil ifTrue: [
-^searchBlock value
-	] ifFalse: [
-		"we have a program, and trying to verify it"
-		(candidate text collect: [ :instName | isa at: instName ])
-			"symbolically run the program"
-			do: [ :inst | state := inst work: state ]
-	 ]
+	^searchBlock value
 ]
 
 { #category : #'as yet unclassified' }
