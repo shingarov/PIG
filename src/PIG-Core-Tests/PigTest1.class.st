@@ -20,3 +20,27 @@ PigTest1 >> test2 [
 	spec add256ToY.
 	spec verify.
 ]
+
+{ #category : #tests }
+PigTest1 >> test3 [
+	| spec |
+	spec := ProgramSpecIS new.
+	spec makeThree.
+	spec verify.
+]
+
+{ #category : #tests }
+PigTest1 >> test4 [
+	| spec |
+	spec := ProgramSpecIS new.
+	spec synthThree.
+	spec synthesize.
+]
+
+{ #category : #tests }
+PigTest1 >> testSynthAdd2 [
+	| spec program |
+	spec := ProgramSpecIS new.
+	program := spec synthStep1.
+	program printString
+]

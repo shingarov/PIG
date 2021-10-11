@@ -5,6 +5,6 @@ Class {
 }
 
 { #category : #semantics }
-CommandLOAD2 >> mutates: oldState into: newState [ 
-	^newState === 2
+CommandLOAD2 >> work: oldState [
+	^2 toInt
 ]

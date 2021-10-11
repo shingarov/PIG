@@ -5,6 +5,6 @@ Class {
 }
 
 { #category : #semantics }
-CommandADD1 >> mutates: oldState into: newState [ 
-	^newState === (oldState + 1)
+CommandADD1 >> work: oldState [
+	^oldState + 1
 ]

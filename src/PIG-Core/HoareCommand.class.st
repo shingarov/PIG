@@ -11,4 +11,5 @@ HoareCommand >> , anotherCommand [
 
 { #category : #semantics }
 HoareCommand >> mutates: oldState into: newState [
+	^newState === (self work: oldState)
 ]
