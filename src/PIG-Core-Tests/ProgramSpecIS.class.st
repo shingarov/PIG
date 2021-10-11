@@ -68,13 +68,10 @@ ProgramSpecIS >> synthStep1 [
 	 yourself.
 	answers := EzSMT new solveProgram: '
 		fuel(2).
-		«precondition».
-		«postcondition».
 		
 		1 { program_text(I,T) : instr(I) } 1 :- T = 1..M, fuel(M).
 		
 		instr(add1;load2).
-		«I mutates: (stateChain at: T) into: (stateChain at: T+1)» :- instr(I), program_text(I, T), T = 1..M, fuel(M).
 		
 		'	in: thisContext.
 	
