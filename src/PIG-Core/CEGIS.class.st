@@ -2,7 +2,8 @@ Class {
 	#name : #CEGIS,
 	#superclass : #Object,
 	#instVars : [
-		'availableBlocks'
+		'availableBlocks',
+		'fuel'
 	],
 	#category : #'PIG-Core'
 }
@@ -11,6 +12,7 @@ Class {
 CEGIS class >> from: availableBlocks [
 	^self basicNew
 		availableBlocks: availableBlocks;
+		initialize;
 		yourself 
 ]
 
@@ -24,9 +26,10 @@ CEGIS >> availableBlocks: anObject [
 	availableBlocks := anObject
 ]
 
-{ #category : #synthesis }
-CEGIS >> fuel [ 
-	^2
+{ #category : #initialization }
+CEGIS >> initialize [
+	super initialize.
+	fuel := 2.
 ]
 
 { #category : #synthesis }
@@ -41,8 +44,6 @@ CEGIS >> synthesize: specClass given: exampleInputs [
 	candidate isNil ifTrue: [ ^nil ].
 	
 	spec := specClass new.
-	spec isa: availableBlocks.
-	spec 	candidate: candidate.
 	spec state: 'X' toInt.
 
 	spec searchBlock: [
@@ -76,7 +77,7 @@ CEGIS >> synthesize: specClass givenExactly: exampleInputs [
 		spec searchBlock: [
 			"This is the block that will be called back from #_ and we
 			don't have a candidate program."
-			stateChain := (1 to: self fuel+1) collect: [ :t | Int sort mkFreshConst: ('state_', t printString) ].
+			stateChain := (1 to: fuel+1) collect: [ :t | Int sort mkFreshConst: ('state_', t printString) ].
 			stateChain at: 1 put: example.
 			spec state: stateChain last
 		].

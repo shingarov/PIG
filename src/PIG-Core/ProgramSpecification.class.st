@@ -4,23 +4,10 @@ Class {
 	#instVars : [
 		'precondition',
 		'postcondition',
-		'stateChain',
-		'candidate',
-		'searchBlock',
-		'isa'
+		'searchBlock'
 	],
 	#category : #'PIG-Core'
 }
-
-{ #category : #accessing }
-ProgramSpecification >> candidate [
-	^candidate
-]
-
-{ #category : #accessing }
-ProgramSpecification >> candidate: aProgram [
-	candidate := aProgram 
-]
 
 { #category : #logic }
 ProgramSpecification >> domain [
@@ -36,12 +23,6 @@ ProgramSpecification >> initialize [
 ProgramSpecification >> initializeStateSpace [
 	self class instVarNames do: [ :aName |
 		self instVarNamed: aName put: ((self domain at: aName) mkFreshConst: aName asString) ]
-]
-
-{ #category : #accessing }
-ProgramSpecification >> isa: anObject [ 
-	isa := anObject 
-
 ]
 
 { #category : #accessing }
@@ -67,11 +48,6 @@ ProgramSpecification >> precondition: anObject [
 { #category : #accessing }
 ProgramSpecification >> searchBlock: anObject [
 	searchBlock := anObject
-]
-
-{ #category : #accessing }
-ProgramSpecification >> stateChain [
-	^stateChain 
 ]
 
 { #category : #logic }
