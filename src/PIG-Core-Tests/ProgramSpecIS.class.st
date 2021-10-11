@@ -54,9 +54,14 @@ ProgramSpecIS >> scriptSelector [
 	^#add2:
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 ProgramSpecIS >> state [
 	^state
+]
+
+{ #category : #accessing }
+ProgramSpecIS >> state: s [
+	state := s
 ]
 
 { #category : #'as yet unclassified' }
