@@ -28,7 +28,7 @@ ProgramSpecIS >> add2 [
 	oldY := state.
 	self precondition: Bool true.
 	self _.
-	self postcondition: state === (oldY+3).
+	self postcondition: state === (oldY+2).
 ]
 
 { #category : #'as yet unclassified' }

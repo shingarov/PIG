@@ -31,10 +31,32 @@ CEGIS >> synthesize: specClass [
 
 { #category : #synthesis }
 CEGIS >> synthesize: specClass given: exampleInputs [
-	| add1 load2 answers specificationFormula clauses_chains chains vspec isa |
+	| candidate vspec |
+
+	
+self halt.
+	candidate := self 	synthesize: specClass givenExactly: exampleInputs.
+	vspec := specClass new.
+	vspec isa: availableBlocks.
+	vspec 	candidate: candidate.
+	vspec state: 'X' toInt.
+	vspec perform: vspec scriptSelector.
+	[vspec verify. ^vspec candidate]
+		on: NotValid 
+		do: [ :ex | ^self synthesize: specClass given: exampleInputs, {ex counterexample constantsASTs at: 'X'.} ]
+]
+
+{ #category : #synthesis }
+CEGIS >> synthesize: specClass givenExactly: exampleInputs [
+	"Synthesize and answer a program out of the receiver's availableBlocks,
+	providing it will work correctly on the given exampleInputs.
+	No further verification is performed (in other words, the synthesized
+	program may not behave correctly for any other input.
+	If a program consisting of <fuel> blocks can not be found, answer nil."
+	| answers specificationFormula clauses_chains chains |
 
 	clauses_chains := exampleInputs collect: [ :example |
-		| spec initState |
+		| spec |
 		spec := specClass new.
 		spec state: example.
 		spec perform: spec scriptSelector "with: example".
@@ -44,12 +66,6 @@ CEGIS >> synthesize: specClass given: exampleInputs [
 	specificationFormula := Bool and: (clauses_chains collect: #key).
 	chains := clauses_chains collect: #value.
 	
-	add1 := CommandADD1 new.
-	load2 := CommandLOAD2 new.
-	isa := Dictionary new
-		at: 'add1' put: add1;
-		at: 'load2' put: load2;
-	 yourself.
 	answers := EzSMT new solveProgram: 'nex(', exampleInputs size printString, ').
 		fuel(2).
 		«specificationFormula».
@@ -59,17 +75,12 @@ CEGIS >> synthesize: specClass given: exampleInputs [
 		instr(add1;load2).
 		«I mutates: ((chains at:Ex) at: T) into: ((chains at:Ex) at: T+1)» :- instr(I), program_text(I, T), T = 1..M, fuel(M), Ex = 1..NEx, nex(NEx).
 		
-		'	in: thisContext.
+		'	in: (availableBlocks copy 
+				at: 'specificationFormula' put: specificationFormula;
+				at: 'chains' put: chains;
+			yourself).
 	
 self halt.
 	answers isEmpty ifTrue: [ ^nil ].
-	
-	vspec := specClass new.
-	vspec isa: isa.
-	vspec 	candidate: (BlockProgram text: answers anyOne synthesizedProgram  isa: isa).
-	vspec state: 'X' toInt.
-	vspec perform: vspec scriptSelector.
-	[vspec verify. ^vspec candidate]
-		on: NotValid 
-		do: [ :ex | ^self synthesize: specClass given: exampleInputs, {ex counterexample constantsASTs at: 'X'.} ]
+	^BlockProgram text: answers anyOne synthesizedProgram isa: availableBlocks
 ]
