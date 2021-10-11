@@ -39,9 +39,13 @@ PigTest1 >> test4 [
 
 { #category : #tests }
 PigTest1 >> testSynthAdd2 [
-	| cegis program |
-	cegis := CEGIS of: ProgramSpecIS.
-	program := cegis synthesize.
+	| cegis program isa |
+	isa := Dictionary new
+		at: 'add1' put: CommandADD1 new;
+		at: 'load2' put: CommandLOAD2 new;
+	 yourself.
+	cegis := CEGIS from: isa.
+	program := cegis synthesize: ProgramSpecIS.
 	self assert: program synthesizedProgram size equals: 2.
 	self assert: program synthesizedProgram first equals: 'add1'.
 	self assert: program synthesizedProgram second equals: 'add1'.

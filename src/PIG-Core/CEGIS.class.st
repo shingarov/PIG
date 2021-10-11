@@ -2,40 +2,40 @@ Class {
 	#name : #CEGIS,
 	#superclass : #Object,
 	#instVars : [
-		'specClass'
+		'availableBlocks'
 	],
 	#category : #'PIG-Core'
 }
 
 { #category : #'instance creation' }
-CEGIS class >> of: aSpecificationClass [
+CEGIS class >> from: availableBlocks [
 	^self basicNew
-		specClass: aSpecificationClass;
+		availableBlocks: availableBlocks;
 		yourself 
 ]
 
 { #category : #accessing }
-CEGIS >> specClass [
-	^ specClass
+CEGIS >> availableBlocks [
+	^ availableBlocks
 ]
 
 { #category : #accessing }
-CEGIS >> specClass: anObject [
-	specClass := anObject
+CEGIS >> availableBlocks: anObject [
+	availableBlocks := anObject
 ]
 
 { #category : #synthesis }
-CEGIS >> synthesize [
-	^self synthesizeFrom: {Int sort anyOne.}
+CEGIS >> synthesize: specClass [
+	^self synthesize: specClass given: {Int sort anyOne.}
 ]
 
-{ #category : #'as yet unclassified' }
-CEGIS >> synthesizeFrom: exampleInputs [
+{ #category : #synthesis }
+CEGIS >> synthesize: specClass given: exampleInputs [
 	| add1 load2 answers specificationFormula clauses_chains chains vspec isa |
 
 	clauses_chains := exampleInputs collect: [ :example |
 		| spec initState |
-		spec := self specClass new.
+		spec := specClass new.
 		initState := spec state.
 		spec perform: spec scriptSelector with: example.
 		(spec precondition ==> spec postcondition forall: initState)
@@ -63,11 +63,11 @@ CEGIS >> synthesizeFrom: exampleInputs [
 	
 
 	
-	vspec := self specClass new.
+	vspec := specClass new.
 	vspec isa: isa.
 	vspec 	candidate: answers anyOne.
 	vspec add2: ('X' toInt).
 	[vspec verify. ^vspec candidate]
 		on: NotValid 
-		do: [ :ex | ^self synthesizeFrom: exampleInputs, {ex counterexample constantsASTs at: 'X'.} ]
+		do: [ :ex | ^self synthesize: specClass given: exampleInputs, {ex counterexample constantsASTs at: 'X'.} ]
 ]
