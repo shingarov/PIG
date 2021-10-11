@@ -31,16 +31,16 @@ CEGIS >> synthesize: specClass [
 
 { #category : #synthesis }
 CEGIS >> synthesize: specClass given: exampleInputs [
-	| candidate vspec |
+	| candidate spec |
 	candidate := self 	synthesize: specClass givenExactly: exampleInputs.
 	candidate isNil ifTrue: [ ^nil ].
 	
-	vspec := specClass new.
-	vspec isa: availableBlocks.
-	vspec 	candidate: candidate.
-	vspec state: 'X' toInt.
-	vspec perform: vspec scriptSelector.
-	[ vspec verify. ^vspec candidate ]
+	spec := specClass new.
+	spec isa: availableBlocks.
+	spec 	candidate: candidate.
+	spec state: 'X' toInt.
+	spec perform: spec scriptSelector.
+	[ spec verify. ^candidate ]
 			on: NotValid 
 			do: [ :ex | ^self synthesize: specClass given: exampleInputs, {ex counterexample constantsASTs at: 'X'.} ]
 ]
