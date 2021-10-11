@@ -36,9 +36,9 @@ CEGIS >> synthesize: specClass given: exampleInputs [
 	clauses_chains := exampleInputs collect: [ :example |
 		| spec initState |
 		spec := specClass new.
-		initState := spec state.
-		spec perform: spec scriptSelector with: example.
-		(spec precondition ==> spec postcondition forall: initState)
+		spec state: example.
+		spec perform: spec scriptSelector "with: example".
+		(spec precondition ==> spec postcondition)
 			-> spec stateChain 
 	].
 	specificationFormula := Bool and: (clauses_chains collect: #key).
@@ -61,12 +61,14 @@ CEGIS >> synthesize: specClass given: exampleInputs [
 		
 		'	in: thisContext.
 	
-
+self halt.
+	answers isEmpty ifTrue: [ ^nil ].
 	
 	vspec := specClass new.
 	vspec isa: isa.
-	vspec 	candidate: answers anyOne.
-	vspec add2: ('X' toInt).
+	vspec 	candidate: (BlockProgram text: answers anyOne synthesizedProgram  isa: isa).
+	vspec state: 'X' toInt.
+	vspec perform: vspec scriptSelector.
 	[vspec verify. ^vspec candidate]
 		on: NotValid 
 		do: [ :ex | ^self synthesize: specClass given: exampleInputs, {ex counterexample constantsASTs at: 'X'.} ]

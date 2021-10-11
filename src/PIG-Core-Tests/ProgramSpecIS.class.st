@@ -16,17 +16,28 @@ ProgramSpecIS >> _ [
 			state := stateChain last
 	] ifFalse: [
 		"we have a program, and trying to verify it"
-		(candidate synthesizedProgram collect: [ :instName | isa at: instName ])
+		(candidate text collect: [ :instName | isa at: instName ])
 			"symbolically run the program"
 			do: [ :inst | state := inst work: state ]
 	 ]
 ]
 
 { #category : #'as yet unclassified' }
-ProgramSpecIS >> add2: X [
-	self precondition: state === X.
+ProgramSpecIS >> add2 [
+	| oldY |
+	oldY := state.
+	self precondition: Bool true.
 	self _.
-	self postcondition: state === (X+2).
+	self postcondition: state === (oldY+3).
+]
+
+{ #category : #'as yet unclassified' }
+ProgramSpecIS >> add2: X [
+	| oldY |
+	oldY := state.
+	self precondition: Bool true.
+	self _.
+	self postcondition: state === (oldY+5).
 ]
 
 { #category : #logic }
@@ -51,7 +62,7 @@ ProgramSpecIS >> makeThree [
 
 { #category : #'as yet unclassified' }
 ProgramSpecIS >> scriptSelector [
-	^#add2:
+	^#add2
 ]
 
 { #category : #accessing }

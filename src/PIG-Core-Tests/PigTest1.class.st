@@ -46,7 +46,7 @@ PigTest1 >> testSynthAdd2 [
 	 yourself.
 	cegis := CEGIS from: isa.
 	program := cegis synthesize: ProgramSpecIS.
-	self assert: program synthesizedProgram size equals: 2.
-	self assert: program synthesizedProgram first equals: 'add1'.
-	self assert: program synthesizedProgram second equals: 'add1'.
+	self assert: program text size equals: 2.
+	self assert: program text first equals: 'add1'.
+	self assert: program text second equals: 'add1'.
 ]
