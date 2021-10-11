@@ -32,18 +32,17 @@ CEGIS >> synthesize: specClass [
 { #category : #synthesis }
 CEGIS >> synthesize: specClass given: exampleInputs [
 	| candidate vspec |
-
-	
-self halt.
 	candidate := self 	synthesize: specClass givenExactly: exampleInputs.
+	candidate isNil ifTrue: [ ^nil ].
+	
 	vspec := specClass new.
 	vspec isa: availableBlocks.
 	vspec 	candidate: candidate.
 	vspec state: 'X' toInt.
 	vspec perform: vspec scriptSelector.
-	[vspec verify. ^vspec candidate]
-		on: NotValid 
-		do: [ :ex | ^self synthesize: specClass given: exampleInputs, {ex counterexample constantsASTs at: 'X'.} ]
+	[ vspec verify. ^vspec candidate ]
+			on: NotValid 
+			do: [ :ex | ^self synthesize: specClass given: exampleInputs, {ex counterexample constantsASTs at: 'X'.} ]
 ]
 
 { #category : #synthesis }
@@ -79,8 +78,7 @@ CEGIS >> synthesize: specClass givenExactly: exampleInputs [
 				at: 'specificationFormula' put: specificationFormula;
 				at: 'chains' put: chains;
 			yourself).
-	
-self halt.
+
 	answers isEmpty ifTrue: [ ^nil ].
 	^BlockProgram text: answers anyOne synthesizedProgram isa: availableBlocks
 ]
