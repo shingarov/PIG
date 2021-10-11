@@ -29,12 +29,22 @@ CEGIS >> availableBlocks: anObject [
 { #category : #initialization }
 CEGIS >> initialize [
 	super initialize.
-	fuel := 2.
+	fuel := 1.
+]
+
+{ #category : #synthesis }
+CEGIS >> maxSeqLength [
+	^5
 ]
 
 { #category : #synthesis }
 CEGIS >> synthesize: specClass [
-	^self synthesize: specClass given: {Int sort anyOne.}
+	| result |
+	result := self synthesize: specClass given: {Int sort anyOne.}.
+	result isNil ifFalse: [ ^result ].
+	fuel := fuel+1.
+	fuel > self maxSeqLength ifTrue: [ SearchDepthExceeded signal ].
+	^self synthesize: specClass
 ]
 
 { #category : #synthesis }
@@ -88,8 +98,9 @@ CEGIS >> synthesize: specClass givenExactly: exampleInputs [
 	specificationFormula := Bool and: (clauses_chains collect: #key).
 	chains := clauses_chains collect: #value.
 	
-	answers := EzSMT new solveProgram: 'nex(', exampleInputs size printString, ').
-		fuel(2).
+	answers := EzSMT new solveProgram: 'nex(', exampleInputs size printString, ').',
+		'fuel(', fuel printString, ').
+		
 		«specificationFormula».
 		
 		1 { program_text(I,T) : instr(I) } 1 :- T = 1..M, fuel(M).
