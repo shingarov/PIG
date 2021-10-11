@@ -37,7 +37,7 @@ CEGIS >> synthesizeFrom: exampleInputs [
 		| spec initState |
 		spec := self specClass new.
 		initState := spec state.
-		spec add2: example.
+		spec perform: spec scriptSelector with: example.
 		(spec precondition ==> spec postcondition forall: initState)
 			-> spec stateChain 
 	].

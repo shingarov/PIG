@@ -50,6 +50,11 @@ ProgramSpecIS >> makeThree [
 ]
 
 { #category : #'as yet unclassified' }
+ProgramSpecIS >> scriptSelector [
+	^#add2:
+]
+
+{ #category : #'as yet unclassified' }
 ProgramSpecIS >> state [
 	^state
 ]
