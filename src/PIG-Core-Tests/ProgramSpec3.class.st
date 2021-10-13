@@ -30,6 +30,6 @@ ProgramSpec3 >> addOneTo: X [
 ProgramSpec3 >> domain [
 	^Dictionary newFromAssociations: {
 		#x -> Int sort.
-		#y -> (BitVector length: 8)
+		#y -> (BitVector///8)
 	}
 ]

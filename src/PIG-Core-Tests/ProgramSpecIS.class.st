@@ -7,6 +7,13 @@ Class {
 	#category : #'PIG-Core-Tests'
 }
 
+{ #category : #logic }
+ProgramSpecIS class >> domain [
+	^Dictionary newFromAssociations: {
+		#state -> Int sort
+	}
+]
+
 { #category : #'as yet unclassified' }
 ProgramSpecIS >> _ [
 	^searchBlock value
@@ -28,13 +35,6 @@ ProgramSpecIS >> add2: X [
 	self precondition: Bool true.
 	self _.
 	self postcondition: state === (oldY+5).
-]
-
-{ #category : #logic }
-ProgramSpecIS >> domain [
-	^Dictionary newFromAssociations: {
-		#state -> Int sort
-	}
 ]
 
 { #category : #'as yet unclassified' }

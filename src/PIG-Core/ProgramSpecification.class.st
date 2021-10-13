@@ -22,7 +22,7 @@ ProgramSpecification >> initialize [
 { #category : #initialization }
 ProgramSpecification >> initializeStateSpace [
 	self class instVarNames do: [ :aName |
-		self instVarNamed: aName put: ((self domain at: aName) mkFreshConst: aName asString) ]
+		self instVarNamed: aName put: ((self class domain at: aName) mkFreshConst: aName asString) ]
 ]
 
 { #category : #accessing }

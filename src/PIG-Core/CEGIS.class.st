@@ -26,6 +26,13 @@ CEGIS >> availableBlocks: anObject [
 	availableBlocks := anObject
 ]
 
+{ #category : #synthesis }
+CEGIS >> availableBlocksASP [
+	^'instr(',
+	($; join: self availableBlocks keys),
+	').'
+]
+
 { #category : #initialization }
 CEGIS >> initialize [
 	super initialize.
@@ -40,7 +47,7 @@ CEGIS >> maxSeqLength [
 { #category : #synthesis }
 CEGIS >> synthesize: specClass [
 	| result |
-	result := self synthesize: specClass given: {Int sort anyOne.}.
+	result := self synthesize: specClass given: {(specClass domain at: #state) anyOne.}.
 	result isNil ifFalse: [ ^result ].
 	fuel := fuel+1.
 	fuel > self maxSeqLength ifTrue: [ SearchDepthExceeded signal ].
@@ -103,15 +110,15 @@ CEGIS >> synthesize: specClass givenExactly: exampleInputs [
 		
 		«specificationFormula».
 		
-		1 { program_text(I,T) : instr(I) } 1 :- T = 1..M, fuel(M).
-		
-		instr(add1;load2).
+		1 { program_text(I,T) : instr(I) } 1 :- T = 1..M, fuel(M).',
+		self availableBlocksASP,
+		'
 		«I mutates: ((chains at:Ex) at: T) into: ((chains at:Ex) at: T+1)» :- instr(I), program_text(I, T), T = 1..M, fuel(M), Ex = 1..NEx, nex(NEx).
-		
-		'	in: (availableBlocks copy 
+		'
+				in: (availableBlocks copy 
 				at: 'specificationFormula' put: specificationFormula;
 				at: 'chains' put: chains;
-			yourself).
+				yourself).
 
 	answers isEmpty ifTrue: [ ^nil ].
 	^BlockProgram text: answers anyOne synthesizedProgram isa: availableBlocks
