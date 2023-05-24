@@ -207,14 +207,14 @@ JumpRelIfLE
 {
   [ :ra :rb :offset | OrderedCollection 
         with: (self instr: 'cmp' bind: 0 bind: 0 bind: ra bind: rb)
-        with: (self instr: 'bc' bind: 4 bind: 1 bind: offset-1) ]
+        with: (self instr: 'bc' bind: 4 bind: 0 bind: 1 bind: offset-1 bind: 0 bind: 0) ]
 }
 
 JumpRelIfEQ
 {
   [ :ra :rb :offset | OrderedCollection 
         with: (self instr: 'cmp' bind: 0 bind: 0 bind: ra bind: rb)
-        with: (self instr: 'bc' bind: 12 bind: 2 bind: offset-1) ]
+        with: (self instr: 'bc' bind: 12 bind: 0 bind: 2 bind: offset-1 bind: 0 bind: 0) ]
 }
 
 
@@ -222,7 +222,7 @@ JumpRelIfNE
 {
   [ :ra :rb :offset | OrderedCollection 
         with: (self instr: 'cmp' bind: 0 bind: 0 bind: ra bind: rb)
-        with: (self instr: 'bc' bind: 4 bind: 2 bind: offset-1) ]
+        with: (self instr: 'bc' bind: 4 bind: 0 bind: 2 bind: offset-1 bind: 0 bind: 0) ]
 }
 
 
@@ -230,7 +230,7 @@ JumpRelIfTagNE
 {
   [ :rWhereTagIs :compareTo :offset | OrderedCollection
         with: (self instr: 'cmpi' bind: 0 bind: rWhereTagIs bind: compareTo)
-        with: (self instr: 'bc' bind: 4 bind: 2 bind: offset-1) ]
+        with: (self instr: 'bc' bind: 4 bind: 0 bind: 2 bind: offset-1 bind: 0 bind: 0) ]
 }
 
 
@@ -283,7 +283,7 @@ FillSlots
         with: (self instr: 'ori'   bind: 20 bind: 20  bind: (immValue bitAnd: 16rFFFF))
         with: (self instr: 'mtspr' bind: rCount bind: 2r0100100000)
         with: (self instr: 'stwu' bind: 20 bind: rBase bind: 4)
-        with: (self instr: 'bc' bind: 16 bind: 0 bind: -1) ]
+        with: (self instr: 'bc' bind: 16 bind: 0 bind: 0 bind: -1 bind: 0 bind: 0) ]
 }
 
 
